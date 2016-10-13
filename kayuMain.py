@@ -3,7 +3,9 @@
 # 1. Tkinter
 # 2. Numpy
 # 3. Matplotlib
-# 4. KayuEngine
+# 4. PyAudio
+# 5. NumPy
+# 6. KayuEngine
 
 # import all the library
 from kayuEngine import *
