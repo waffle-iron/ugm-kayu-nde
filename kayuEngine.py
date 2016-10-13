@@ -1,3 +1,9 @@
+from tkinter import *
+from tkinter import ttk
+from numpy import arange, sin, pi #need to be customized
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2TkAgg
+from matplotlib.figure import Figure
+
 def winCenter(Tk, x, y):
 	# get screen width and height
 	ws = Tk.winfo_screenwidth() # width of the screen
@@ -14,3 +20,19 @@ def winCenter(Tk, x, y):
 	y = (hs/2) - (rootHeight/2)
 
 	Tk.geometry('%dx%d+%d+%d' % (rootWidth, rootHeight, x, y))
+
+def Graph(command, lines, x, y, figure):
+	if command == 'create':
+		a = figure.add_subplot(111)
+		return a.plot(x,y)
+	if command == 'modify':
+		l = lines.pop(0)	
+		l.remove()
+		a = figure.add_subplot(111)
+		return a.plot(x,y)
+	if command == 'destroy':
+		l = lines.pop(0)
+		l.remove()
+		return lines
+
+	
