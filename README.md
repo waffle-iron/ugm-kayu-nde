@@ -2,6 +2,14 @@
 An open source software developed to measure MoE of a wood with an accoustical methods.
 
 # Software structure
+## Required Library
+1. Tkinter
+2. Numpy
+3. Matplotlib
+4. PyAudio
+5. NumPy
+6. KayuEngine
+
 ## Core Engine
 All the core engine of the program written in Python in module kayuEngine. The Python version is 3.5
 
@@ -10,3 +18,4 @@ User interface of this project are developed in Python Tkinter written in module
 
 # Fork It
 If you are a NDT engineer, feel free to fork this program to measure the NDT of the wood.
+
