@@ -1,10 +1,10 @@
 #!/bin/python3
 # Required library
 # 1. Tkinter
-# 2. Numpy
+# 2. NumPy
 # 3. Matplotlib
 # 4. PyAudio
-# 5. NumPy
+# 5. SciPy
 # 6. KayuEngine
 
 # import all the library

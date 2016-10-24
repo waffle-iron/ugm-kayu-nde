@@ -7,7 +7,7 @@ An open source software developed to measure MoE of a wood with an accoustical m
 2. Numpy
 3. Matplotlib
 4. PyAudio
-5. NumPy
+5. SciPy
 6. KayuEngine
 
 ## Core Engine
