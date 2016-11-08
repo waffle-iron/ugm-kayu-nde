@@ -10,6 +10,12 @@
 # IMPORT ALL THE REQUIRED LIBRARY
 from kayuEngine import *
 
+# DEFINING A CLASS OF WOOD
+def windowInput():
+	command=newWindow(root, "Input the wood data")
+# USERDEFINED METHOD END
+
+
 # PREPARE THE ROOT WINDOW
 root = Tk()
 rootTitle = root.title("Kayu: Open Wood NDT")
@@ -35,8 +41,8 @@ lines = a.plot(t, s) #plot(x,y) for initial graph
 
 # CREATE THE SIDE BAR
 # botton for Input
-buttonInput = Button(frameToolbar, text="I", width=1)	#buttonInput
-buttonInput.pack(side=TOP,  expand=NO, anchor=NE)
+buttonInput = Button(frameToolbar, text="I", command=windowInput, width=1)	#buttonInput
+buttonInput.pack(side=TOP, expand=NO, anchor=NE)
 # button for the Record
 buttonRecord = Button(frameToolbar, text="R", width=1)	#buttonRecord
 buttonRecord.pack(side=TOP,  expand=NO, anchor=NE)
@@ -66,7 +72,7 @@ t = arange(-2.0, 1.0, 0.001)
 s = t*sin(1/t)
 lines = Graph('create', lines, t, s, f)
 
-# create side bar
+
 
 
 # run the program
