@@ -49,9 +49,12 @@ buttonRecord.pack(side=TOP,  expand=NO, anchor=NE)
 # button for the Stop
 buttonStop = Button(frameToolbar, text="S", width=1)	#buttonStop
 buttonStop.pack(side=TOP,  expand=NO, anchor=NE)
-# button for the Stop
+# button for the Pick
 buttonPick = Button(frameToolbar, text="P", width=1)	#buttonPick
 buttonPick.pack(side=TOP,  expand=NO, anchor=NE)
+# button for the Calculate
+buttonCalc = Button(frameToolbar, text="C", width=1)	#buttonPick
+buttonCalc.pack(side=TOP,  expand=NO, anchor=NE)
 
 # EMBEDDING THE GRAPH
 canvas = FigureCanvasTkAgg(f, master=frameTop)

@@ -251,7 +251,17 @@ def newWindow(root, title):
 				else:
 					inputTextBox(entryCrossSectionWidth, "0")
 
-	
+	def inputTextBoxDel():
+		if setPosition == 0:
+			deleteTextBox(entryWeight)
+		else:
+			if setPosition == 1:
+				deleteTextBox(entryLength)
+			else:
+				if setPosition == 2:
+					deleteTextBox(entryCrossSectionLength)
+				else:
+					deleteTextBox(entryCrossSectionWidth)	
 
 
 	button7 = Button(frameKeys, text="7", command=inputTextBox7)
@@ -276,7 +286,7 @@ def newWindow(root, title):
 	buttonDot.grid(column=1, row=3)
 	button0 = Button(frameKeys, text="0", command=inputTextBox0)
 	button0.grid(column=2, row=3)
-	buttonDel = Button(frameKeys, text="Del")# command=inputTextBoxDel)
+	buttonDel = Button(frameKeys, text="Del", command=inputTextBoxDel)
 	buttonDel.grid(column=3, row=3)	
 
 
@@ -287,6 +297,8 @@ def newWindow(root, title):
 def inputTextBox(keys, theValue):
 	keys.insert(END, theValue)
 
+def deleteTextBox(keys):
+	keys.delete(0, 'end')
 
 
 
