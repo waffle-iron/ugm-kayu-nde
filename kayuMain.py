@@ -11,7 +11,7 @@
 from kayuEngine import *
 
 # DEFINING A CLASS OF WOOD
-def windowInput():
+def windowSettings():
 	command=newWindow(root, "Input the wood data")
 # USERDEFINED METHOD END
 
@@ -31,24 +31,13 @@ frameBottom.pack(side=BOTTOM,  expand=NO, anchor=SW)
 frameToolbar = Frame(frameTop, width=40, height=280)
 frameToolbar.pack(side=RIGHT, expand=NO, anchor=NE)
 
-# CREATE THE GRAPHH
-t = arange(-1.0, 1.0, 0.001)
-s = t*sin(1/t)
-# draw initial graph
-f = Figure(figsize=(4.4,2.8), dpi=100)
-a = f.add_subplot(111)
-lines = a.plot(t, s) #plot(x,y) for initial graph
-
 # CREATE THE SIDE BAR
 # botton for Input
-buttonInput = Button(frameToolbar, text="I", command=windowInput, width=1)	#buttonInput
-buttonInput.pack(side=TOP, expand=NO, anchor=NE)
+buttonSettings = Button(frameToolbar, text="S", command=windowSettings, width=1)	#buttonInput
+buttonSettings.pack(side=TOP, expand=NO, anchor=NE)
 # button for the Record
-buttonRecord = Button(frameToolbar, text="R", width=1)	#buttonRecord
+buttonRecord = Button(frameToolbar, text="R", width=1, command=recordingInAction)	#buttonRecord
 buttonRecord.pack(side=TOP,  expand=NO, anchor=NE)
-# button for the Stop
-buttonStop = Button(frameToolbar, text="S", width=1)	#buttonStop
-buttonStop.pack(side=TOP,  expand=NO, anchor=NE)
 # button for the Pick
 buttonPick = Button(frameToolbar, text="P", width=1)	#buttonPick
 buttonPick.pack(side=TOP,  expand=NO, anchor=NE)
@@ -66,14 +55,14 @@ toolbar = NavigationToolbar2TkAgg(canvas, frameBottom).pack(side=LEFT)
 
 
 
-s = t*sin(1/2*t)
-lines = Graph('modify', lines, t, s, f)
+# s = t*sin(1/2*t)
+# lines = Graph('modify', lines, t, s, f)
 
-Graph('destroy', lines, t, s, f)
+# Graph('destroy', lines, t, s, f)
 
-t = arange(-2.0, 1.0, 0.001)
-s = t*sin(1/t)
-lines = Graph('create', lines, t, s, f)
+# t = arange(-2.0, 1.0, 0.001)
+# s = t*sin(1/t)
+# lines = Graph('create', lines, t, s, f)
 
 
 

@@ -3,8 +3,86 @@ from tkinter import ttk
 from numpy import arange, sin, pi #need to be customized
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2TkAgg
 from matplotlib.figure import Figure
+import pyaudio
+import wave
+import sys
+import numpy as np
+from scipy.io import wavfile as wav
+from scipy.fftpack import fft
+import datetime as dt
+
+
+class Wood:
+	def __init__(self, weight, length, crossSectionLength, crossSectionWidth, recordDuration, name):
+		self.length = float(length)
+		self.weight = float(weight)
+		self.crossSectionWidth = float(crossSectionWidth)
+		self.crossSectionLength = float(crossSectionLength)
+		self.density = float(weight)/(float(length)*float(crossSectionLength)*float(crossSectionWidth))
+		self.recordDuration = int(recordDuration)
+		self.name = name
+
+
+
+# GLOBAL VARIABLES START
+kayu = Wood(1.2, 1.3, 1.4, 1.5, 3, ".123") #initial instance of Wood
+recordStatus = 0
+# GLOBAL VARIABLES END
+
+def timeNow():
+	return dt.datetime.now().strftime("%Y-%m-%d %H:%M")
+
+# GLOBAL VARIABLE
+# varibel global figure
+t = arange(-1.0, 1.0, 0.001)
+s = t*sin(1/t)
+# draw initial graph
+f = Figure(figsize=(4.4,2.8), dpi=100)
+a = f.add_subplot(111)
+lines = a.plot(t, s) #plot(x,y) for initial graph
+
+
 
 setPosition = 0
+CHUNK = 8192
+FORMAT = pyaudio.paInt16
+CHANNELS = 1
+RATE = 48000
+WAVE_OUTPUT_FILENAME = timeNow() + "name" + kayu.name + ".wav"
+if sys.platform == 'darwin':
+    CHANNELS = 1
+# GLOBAL VARIABLE END
+
+def recordingInAction():
+	global t, s, f, lines
+	p = pyaudio.PyAudio()
+	stream = p.open(format=FORMAT,
+                channels=CHANNELS,
+                rate=RATE,
+                input=True,
+                frames_per_buffer=CHUNK)
+	print("* recording")
+
+	frames = []
+	for i in range(0, int(RATE / CHUNK * kayu.recordDuration)):
+	    data = stream.read(CHUNK)
+	    frames.append(data)
+	    
+
+	print("* done recording")
+	stream.stop_stream()
+	stream.close()
+	p.terminate()
+	WAVE_OUTPUT_FILENAME = timeNow() + "name" + kayu.name + ".wav"
+	wf = wave.open(WAVE_OUTPUT_FILENAME, 'wb')
+	wf.setnchannels(CHANNELS)
+	wf.setsampwidth(p.get_sample_size(FORMAT))
+	wf.setframerate(RATE)
+	wf.writeframes(b''.join(frames))
+	wf.close()
+	rate, data = wav.read(WAVE_OUTPUT_FILENAME)
+	t = arange(len(data))
+	lines = Graph('modify', lines, t, data, f)
 
 def winCenter(Tk, x, y):
 	# get screen width and height
@@ -38,13 +116,6 @@ def Graph(command, lines, x, y, figure):
 		return lines
 
 
-class Wood:
-	def __init__(self, weight, length, crossSectionLength, crossSectionWidth):
-		self.length = float(length)
-		self.weight = float(weight)
-		self.crossSectionWidth = float(crossSectionWidth)
-		self.crossSectionLength = float(crossSectionLength)
-		self.density = float(weight)/(float(length)*float(crossSectionLength)*float(crossSectionWidth))
 
 
 # USERDEFINED METHOD START
@@ -70,6 +141,10 @@ def newWindow(root, title):
 	labelCrossSectionLength.grid(column=0, row=2, sticky=(W))
 	labelCrossSectionWidth = Label(frameInput, text="CS Width (m): ")
 	labelCrossSectionWidth.grid(column=0, row=3, sticky=(W))
+	labelDuration = Label(frameInput, text="Duration (s): ")
+	labelDuration.grid(column=0, row=4, sticky=(W))
+	labelWoodName = Label(frameInput, text="Wood Name: ")
+	labelWoodName.grid(column=0, row=5, sticky=(W))
 
 	weightStr = StringVar()
 	entryWeight = Entry(frameInput, textvariable=weightStr)
@@ -89,7 +164,17 @@ def newWindow(root, title):
 	crossSectionWidthStr = StringVar()
 	entryCrossSectionWidth = Entry(frameInput, textvariable=crossSectionWidthStr)
 	entryCrossSectionWidth.grid(column=1, row=3)
-	crossSectionWidthStr.set(kayu.crossSectionWidth)	
+	crossSectionWidthStr.set(kayu.crossSectionWidth)
+
+	durationStr = StringVar()
+	entryDuration = Entry(frameInput, textvariable=durationStr)
+	entryDuration.grid(column=1, row=4)
+	durationStr.set(kayu.recordDuration)		
+
+	woodNameStr = StringVar()
+	entryWoodName = Entry(frameInput, textvariable=woodNameStr)
+	entryWoodName.grid(column=1, row=5)
+	woodNameStr.set(kayu.name)
 
 	def setWeight():
 		kayu.weight = weightStr.get()
@@ -115,8 +200,23 @@ def newWindow(root, title):
 	def setCrossSectionWidth():
 		kayu.crossSectionWidth = crossSectionWidthStr.get()
 		buttonCrossSectionWidth.config(state="disabled")
+		buttonDuration.config(state="normal")
 		global setPosition 
 		setPosition+=1
+		# print("succes")
+	def setDuration():
+		kayu.recordDuration = int(durationStr.get())
+		buttonDuration.config(state="disabled")
+		buttonWoodName.config(state="normal")
+		global setPosition 
+		setPosition+=1
+		# print("succes")
+	def setName():
+		kayu.name = str(woodNameStr.get())
+		buttonWoodName.config(state="disabled")
+		buttonWeight.config(state="normal")
+		global setPosition 
+		setPosition=0
 		# print("succes")
 
 
@@ -128,6 +228,10 @@ def newWindow(root, title):
 	buttonCrossSectionLength.grid(column=2, row=2)
 	buttonCrossSectionWidth = Button(frameInput, text="Set", state=DISABLED, command=setCrossSectionWidth)
 	buttonCrossSectionWidth.grid(column=2, row=3)
+	buttonDuration = Button(frameInput, text="Set", state=DISABLED, command=setDuration)
+	buttonDuration.grid(column=2, row=4)
+	buttonWoodName = Button(frameInput, text="Set", state=DISABLED, command=setName)
+	buttonWoodName.grid(column=2, row=5)
 
 	def inputTextBox7():
 		if setPosition == 0:
@@ -139,7 +243,13 @@ def newWindow(root, title):
 				if setPosition == 2:
 					inputTextBox(entryCrossSectionLength, "7")
 				else:
-					inputTextBox(entryCrossSectionWidth, "7")
+					if setPosition ==3:
+						inputTextBox(entryCrossSectionWidth, "7")
+					else:
+						if setPosition ==4:
+							inputTextBox(entryDuration, "7")
+						else:
+							inputTextBox(entryWoodName, "7")
 	def inputTextBox8():
 		if setPosition == 0:
 			inputTextBox(entryWeight, "8")
@@ -150,7 +260,13 @@ def newWindow(root, title):
 				if setPosition == 2:
 					inputTextBox(entryCrossSectionLength, "8")
 				else:
-					inputTextBox(entryCrossSectionWidth, "8")
+					if setPosition ==3:
+						inputTextBox(entryCrossSectionWidth, "8")
+					else:
+						if setPosition ==4:
+							inputTextBox(entryDuration, "8")
+						else:
+							inputTextBox(entryWoodName, "8")
 	def inputTextBox9():
 		if setPosition == 0:
 			inputTextBox(entryWeight, "9")
@@ -161,7 +277,13 @@ def newWindow(root, title):
 				if setPosition == 2:
 					inputTextBox(entryCrossSectionLength, "9")
 				else:
-					inputTextBox(entryCrossSectionWidth, "9")
+					if setPosition ==3:
+						inputTextBox(entryCrossSectionWidth, "9")
+					else:
+						if setPosition ==4:
+							inputTextBox(entryDuration, "9")
+						else:
+							inputTextBox(entryWoodName, "9")
 	def inputTextBox4():
 		if setPosition == 0:
 			inputTextBox(entryWeight, "4")
@@ -172,7 +294,13 @@ def newWindow(root, title):
 				if setPosition == 2:
 					inputTextBox(entryCrossSectionLength, "4")
 				else:
-					inputTextBox(entryCrossSectionWidth, "4")
+					if setPosition ==3:
+						inputTextBox(entryCrossSectionWidth, "4")
+					else:
+						if setPosition ==4:
+							inputTextBox(entryDuration, "4")
+						else:
+							inputTextBox(entryWoodName, "4")
 	def inputTextBox5():
 		if setPosition == 0:
 			inputTextBox(entryWeight, "5")
@@ -183,7 +311,13 @@ def newWindow(root, title):
 				if setPosition == 2:
 					inputTextBox(entryCrossSectionLength, "5")
 				else:
-					inputTextBox(entryCrossSectionWidth, "5")
+					if setPosition ==3:
+						inputTextBox(entryCrossSectionWidth, "5")
+					else:
+						if setPosition ==4:
+							inputTextBox(entryDuration, "5")
+						else:
+							inputTextBox(entryWoodName, "5")
 	def inputTextBox6():
 		if setPosition == 0:
 			inputTextBox(entryWeight, "6")
@@ -194,7 +328,13 @@ def newWindow(root, title):
 				if setPosition == 2:
 					inputTextBox(entryCrossSectionLength, "6")
 				else:
-					inputTextBox(entryCrossSectionWidth, "6")
+					if setPosition ==3:
+						inputTextBox(entryCrossSectionWidth, "6")
+					else:
+						if setPosition ==4:
+							inputTextBox(entryDuration, "6")
+						else:
+							inputTextBox(entryWoodName, "6")
 	def inputTextBox1():
 		if setPosition == 0:
 			inputTextBox(entryWeight, "1")
@@ -205,7 +345,13 @@ def newWindow(root, title):
 				if setPosition == 2:
 					inputTextBox(entryCrossSectionLength, "1")
 				else:
-					inputTextBox(entryCrossSectionWidth, "1")	
+					if setPosition ==3:
+						inputTextBox(entryCrossSectionWidth, "1")
+					else:
+						if setPosition ==4:
+							inputTextBox(entryDuration, "1")
+						else:
+							inputTextBox(entryWoodName, "1")
 	def inputTextBox2():
 		if setPosition == 0:
 			inputTextBox(entryWeight, "2")
@@ -216,7 +362,13 @@ def newWindow(root, title):
 				if setPosition == 2:
 					inputTextBox(entryCrossSectionLength, "2")
 				else:
-					inputTextBox(entryCrossSectionWidth, "2")
+					if setPosition ==3:
+						inputTextBox(entryCrossSectionWidth, "2")
+					else:
+						if setPosition ==4:
+							inputTextBox(entryDuration, "2")
+						else:
+							inputTextBox(entryWoodName, "2")
 	def inputTextBox3():
 		if setPosition == 0:
 			inputTextBox(entryWeight, "3")
@@ -227,7 +379,13 @@ def newWindow(root, title):
 				if setPosition == 2:
 					inputTextBox(entryCrossSectionLength, "3")
 				else:
-					inputTextBox(entryCrossSectionWidth, "3")
+					if setPosition ==3:
+						inputTextBox(entryCrossSectionWidth, "3")
+					else:
+						if setPosition ==4:
+							inputTextBox(entryDuration, "3")
+						else:
+							inputTextBox(entryWoodName, "3")
 	def inputTextBoxDot():
 		if setPosition == 0:
 			inputTextBox(entryWeight, ".")
@@ -238,7 +396,13 @@ def newWindow(root, title):
 				if setPosition == 2:
 					inputTextBox(entryCrossSectionLength, ".")
 				else:
-					inputTextBox(entryCrossSectionWidth, ".")	
+					if setPosition ==3:
+						inputTextBox(entryCrossSectionWidth, ".")
+					else:
+						if setPosition ==4:
+							inputTextBox(entryDuration, ".")
+						else:
+							inputTextBox(entryWoodName, ".")	
 	def inputTextBox0():
 		if setPosition == 0:
 			inputTextBox(entryWeight, "0")
@@ -249,7 +413,13 @@ def newWindow(root, title):
 				if setPosition == 2:
 					inputTextBox(entryCrossSectionLength, "0")
 				else:
-					inputTextBox(entryCrossSectionWidth, "0")
+					if setPosition ==3:
+						inputTextBox(entryCrossSectionWidth, "0")
+					else:
+						if setPosition ==4:
+							inputTextBox(entryDuration, "0")
+						else:
+							inputTextBox(entryWoodName, "0")
 
 	def inputTextBoxDel():
 		if setPosition == 0:
@@ -261,7 +431,13 @@ def newWindow(root, title):
 				if setPosition == 2:
 					deleteTextBox(entryCrossSectionLength)
 				else:
-					deleteTextBox(entryCrossSectionWidth)	
+					if setPosition ==3:
+						deleteTextBox(entryCrossSectionWidth)
+					else:
+						if setPosition ==4:
+							deleteTextBox(entryDuration)
+						else:
+							deleteTextBox(entryWoodName)	
 
 
 	button7 = Button(frameKeys, text="7", command=inputTextBox7)
@@ -289,6 +465,14 @@ def newWindow(root, title):
 	buttonDel = Button(frameKeys, text="Del", command=inputTextBoxDel)
 	buttonDel.grid(column=3, row=3)	
 
+	def quitInput():
+		global setPosition 
+		setPosition=0
+		t.destroy();
+
+	buttonExit = Button(frameKeys, text="Close", command=quitInput)
+	buttonExit.grid(column=4, row=5)
+
 
 
 
@@ -305,6 +489,3 @@ def deleteTextBox(keys):
 
 
 
-# GLOBAL VARIABLES START
-kayu = Wood(1.2,1.3,1.4,1.5) #initial instance of Wood
-# GLOBAL VARIABLES END
