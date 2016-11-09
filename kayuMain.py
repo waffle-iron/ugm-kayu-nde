@@ -45,8 +45,15 @@ def recordingInAction():
 	lines = Graph('modify', lines, t, data, f)
 	buttonToggle.config(state="normal")
 def toggleSpectrumTime():
-	global toggleState
-	toggleState
+	global toggleState, data
+	if toggleState == 0: #artinya kalau mau nampilin F
+                fft_out = fft(data)
+                N = len(data)
+                T = 1.0 / 44100
+                xf = np.linspace(0.0, 1.0/(2.0*T), N/2)
+                plt.semilogy(xf[1:N/2], 2.0/N * np.abs(fft_out[1:N/2]), 'b')
+                plt.grid()
+                plt.show()
 
 # USERDEFINED METHOD END
 
@@ -54,6 +61,7 @@ def toggleSpectrumTime():
 # PREPARE THE ROOT WINDOW
 root = Tk()
 rootTitle = root.title("Kayu: Open Wood NDT")
+root.attributes('-fullscreen', True)
 winCenter(root, 480, 320)
 
 # MEMBUAT BEBERAPA FRAMES

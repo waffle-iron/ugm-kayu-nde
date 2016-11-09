@@ -85,6 +85,7 @@ def Graph(command, lines, x, y, figure):
 def newWindow(root, title):
 	
 	t = Toplevel(root)
+	t.attributes('-fullscreen', True)
 	t.wm_title(title)	
 	winCenter(t, 480, 320)
 	t.lift(aboveThis=root)
