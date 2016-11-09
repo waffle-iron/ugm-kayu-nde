@@ -21,18 +21,12 @@ class Wood:
 		self.density = float(weight)/(float(length)*float(crossSectionLength)*float(crossSectionWidth))
 		self.recordDuration = int(recordDuration)
 		self.name = name
-
-
-
+def timeNow():
+	return dt.datetime.now().strftime("%Y-%m-%d %H:%M")
 # GLOBAL VARIABLES START
 kayu = Wood(1.2, 1.3, 1.4, 1.5, 3, ".123") #initial instance of Wood
 recordStatus = 0
-# GLOBAL VARIABLES END
-
-def timeNow():
-	return dt.datetime.now().strftime("%Y-%m-%d %H:%M")
-
-# GLOBAL VARIABLE
+setPosition = 0
 # varibel global figure
 t = arange(-1.0, 1.0, 0.001)
 s = t*sin(1/t)
@@ -40,10 +34,8 @@ s = t*sin(1/t)
 f = Figure(figsize=(4.4,2.8), dpi=100)
 a = f.add_subplot(111)
 lines = a.plot(t, s) #plot(x,y) for initial graph
-
-
-
-setPosition = 0
+data = []
+# variable global recording
 CHUNK = 8192
 FORMAT = pyaudio.paInt16
 CHANNELS = 1
@@ -51,38 +43,9 @@ RATE = 48000
 WAVE_OUTPUT_FILENAME = timeNow() + "name" + kayu.name + ".wav"
 if sys.platform == 'darwin':
     CHANNELS = 1
+# variable global toggle
+toggleState = 0;
 # GLOBAL VARIABLE END
-
-def recordingInAction():
-	global t, s, f, lines
-	p = pyaudio.PyAudio()
-	stream = p.open(format=FORMAT,
-                channels=CHANNELS,
-                rate=RATE,
-                input=True,
-                frames_per_buffer=CHUNK)
-	print("* recording")
-
-	frames = []
-	for i in range(0, int(RATE / CHUNK * kayu.recordDuration)):
-	    data = stream.read(CHUNK)
-	    frames.append(data)
-	    
-
-	print("* done recording")
-	stream.stop_stream()
-	stream.close()
-	p.terminate()
-	WAVE_OUTPUT_FILENAME = timeNow() + "name" + kayu.name + ".wav"
-	wf = wave.open(WAVE_OUTPUT_FILENAME, 'wb')
-	wf.setnchannels(CHANNELS)
-	wf.setsampwidth(p.get_sample_size(FORMAT))
-	wf.setframerate(RATE)
-	wf.writeframes(b''.join(frames))
-	wf.close()
-	rate, data = wav.read(WAVE_OUTPUT_FILENAME)
-	t = arange(len(data))
-	lines = Graph('modify', lines, t, data, f)
 
 def winCenter(Tk, x, y):
 	# get screen width and height

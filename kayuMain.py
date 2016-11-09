@@ -13,6 +13,41 @@ from kayuEngine import *
 # DEFINING A CLASS OF WOOD
 def windowSettings():
 	command=newWindow(root, "Input the wood data")
+def recordingInAction():
+	global t, s, f, lines, data
+	p = pyaudio.PyAudio()
+	stream = p.open(format=FORMAT,
+                channels=CHANNELS,
+                rate=RATE,
+                input=True,
+                frames_per_buffer=CHUNK)
+	print("* recording")
+
+	frames = []
+	for i in range(0, int(RATE / CHUNK * kayu.recordDuration)):
+	    data = stream.read(CHUNK)
+	    frames.append(data)
+	    
+
+	print("* done recording")
+	stream.stop_stream()
+	stream.close()
+	p.terminate()
+	WAVE_OUTPUT_FILENAME = timeNow() + "name" + kayu.name + ".wav"
+	wf = wave.open(WAVE_OUTPUT_FILENAME, 'wb')
+	wf.setnchannels(CHANNELS)
+	wf.setsampwidth(p.get_sample_size(FORMAT))
+	wf.setframerate(RATE)
+	wf.writeframes(b''.join(frames))
+	wf.close()
+	rate, data = wav.read(WAVE_OUTPUT_FILENAME)
+	t = arange(len(data))
+	lines = Graph('modify', lines, t, data, f)
+	buttonToggle.config(state="normal")
+def toggleSpectrumTime():
+	global toggleState
+	toggleState
+
 # USERDEFINED METHOD END
 
 
@@ -38,6 +73,9 @@ buttonSettings.pack(side=TOP, expand=NO, anchor=NE)
 # button for the Record
 buttonRecord = Button(frameToolbar, text="R", width=1, command=recordingInAction)	#buttonRecord
 buttonRecord.pack(side=TOP,  expand=NO, anchor=NE)
+#button for the Spectrum/Time toggle
+buttonToggle = Button(frameToolbar, text="F", width=1, state="disabled")
+buttonToggle.pack(side=TOP, expand=NO, anchor=NE)
 # button for the Pick
 buttonPick = Button(frameToolbar, text="P", width=1)	#buttonPick
 buttonPick.pack(side=TOP,  expand=NO, anchor=NE)
