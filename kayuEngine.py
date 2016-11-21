@@ -67,12 +67,12 @@ def winCenter(Tk, x, y):
 def Graph(command, lines, x, y, figure):
 	if command == 'create':
 		a = figure.add_subplot(111)
-		return a.plot(x,y)
+		return a.plot(x,y, 'b')
 	if command == 'modify':
 		l = lines.pop(0)	
 		l.remove()
 		a = figure.add_subplot(111)
-		return a.plot(x,y)
+		return a.plot(x,y, 'b')
 	if command == 'destroy':
 		l = lines.pop(0)
 		l.remove()
