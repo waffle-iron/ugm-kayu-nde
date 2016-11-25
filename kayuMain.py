@@ -50,7 +50,6 @@ def recordingInAction():
 	canvas.draw()
 
 # INI PR KITA!
-# toggle spectrum view to time view
 def toggleSpectrumTime():
 	global toggleState, data, lines
 	if toggleState == 0: #artinya kalau mau nampilin F
@@ -69,6 +68,15 @@ def toggleSpectrumTime():
 		canvas.draw()
 		buttonToggle.config(text="F")
 		toggleState = 0
+
+def manualInput():
+	global t, s, f, lines, data	# import global variable
+	rate, data = wav.read('audiocheck.net_sin_2400Hz_-3dBFS_3s.wav')
+	t = arange(len(data))
+	lines = Graph('modify', lines, t, data, f)
+	buttonToggle.config(state="normal")
+	canvas.draw()
+
 
 
 # PREPARE THE ROOT WINDOW
@@ -105,9 +113,16 @@ buttonToggle.pack(side=TOP, expand=NO, anchor=NE)
 # button for the Pick
 buttonPick = Button(frameToolbar, text="P", width=1)	#buttonPick
 buttonPick.pack(side=TOP,  expand=NO, anchor=NE)
+
+# button for the Manual
+buttonManu = Button(frameToolbar, text="M", width=1, command=manualInput)	#buttonPick
+buttonManu.pack(side=TOP,  expand=NO, anchor=NE)
+
 # button for the Calculate
 buttonCalc = Button(frameToolbar, text="C", width=1,command=exitInput)	#buttonPick
 buttonCalc.pack(side=TOP,  expand=NO, anchor=NE)
+
+
 
 # EMBEDDING THE GRAPH
 canvas = FigureCanvasTkAgg(f, master=frameTop)
