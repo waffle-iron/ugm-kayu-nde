@@ -13,7 +13,7 @@ The software is part of the open source instrument called MyWood. The diagram bl
 <br><br>
 <img src="./pictures/kayu-instrument-diagram-block.PNG" width="50%" height="50%">
 <br><br>
-The microphone receives the wood's longitudinal stress wave signals connected to the USB soundcard which acts as the signal sampling peripherals. The "brain" of the instrument is the Raspberry Pi Model 2 B. The user interface peripherals is the touchscreen display. The user interacts with the instrument with the touchscreen display.
+The microphone receives the wood's longitudinal stress wave signals and connected to the USB soundcard which acts as the signal sampling peripherals. The "brain" of the instrument is the Raspberry Pi Model 2 B. The user interface peripherals is the touchscreen display. The user interacts with the instrument with the touchscreen display.
 
 # Software structure
 ## Required Library
