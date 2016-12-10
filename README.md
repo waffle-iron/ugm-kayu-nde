@@ -3,7 +3,9 @@
 This open source software developed to measure the MoE of wood with an acoustical method.
 ## The acoustical method
 The acoustic method used in this program is the longitudinal stress wave technique as shown in figure below.
-<img src="./pictures/kayu-experiment-setup.PNG">
+<br>
+<img src="./pictures/kayu-experiment-setup.PNG" width="50%" height="50%">
+
 
 # Software structure
 ## Required Library
