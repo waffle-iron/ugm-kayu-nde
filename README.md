@@ -18,7 +18,7 @@ The microphone receives the wood's longitudinal stress wave signals and connecte
 ## Software structure
 This software developed with n-tier application architecture as shown in figure below.
 <br><br>
-<img src="./pictures/kayu-software-architecture.PNG" width="37.5%" height="37.5%">
+<img src="./pictures/kayu-software-architecture.PNG" width="25%" height="25%">
 <br><br>
 The data layer is the linux filesystem which is the place to store the recorded audio wav file. The logic layer of the software is Python with Scipy and Numpy library. The presentation layer is the Tkinter.
 
