@@ -1,5 +1,9 @@
-# kayu
-An open source software developed to measure MoE of a wood with an accoustical methods.
+# Open Source Non-Destructive Wood MoE Evaluation
+## Purpose of the software
+This open source software developed to measure the MoE of wood with an acoustical method.
+## The acoustical method
+The acoustic method used in this program is the longitudinal stress wave technique as shown in figure below.
+<img src="./picture/kayu-experiment-setup.PN>
 
 # Software structure
 ## Required Library
