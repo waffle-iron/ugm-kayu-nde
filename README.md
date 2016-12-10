@@ -15,30 +15,19 @@ The software is part of the open source instrument called MyWood. The diagram bl
 <br><br>
 The microphone receives the wood's longitudinal stress wave signals and connected to the USB soundcard which acts as the signal sampling peripherals. The "brain" of the instrument is the Raspberry Pi Model 2 B. The user interface peripherals is the touchscreen display. The user interacts with the instrument with the touchscreen display.
 
-# Software structure
+## Software structure
+This software developed with n-tier application architecture as shown in figure below.
+<br><br>
+<img src="./pictures/kayu-software-architecture.PNG" width="50%" height="50%">
+<br><br>
+The data layer is the linux filesystem which is the place to store the recorded audio wav file. The logic layer of the software is Python with Scipy and Numpy library. The presentation layer is the Tkinter.
+
 ## Required Library
 1. Tkinter as Graphical User Interface
 2. Scipy as the numerical calculation engine
 3. Matplotlib as plot library engine
 4. PyAudio as the audio signal sampling engine
 5. kayu_engine
-
-## Core Engine
-All the core engine of the program written in Python in module kayu_engine. The Python version is 3.5.
-
-## User Interface
-User interface of this project are developed in Python Tkinter written in module kayu_main.
-
-# Miscellaneous
-## dsp-hub folder
-This folder contains my experiment in developing the dsp for the project.
-
-## experiment-hub
-This folder contains my experiment in developing other part of the project.
-
-# Fork It
-If you are a NDT engineer, feel free to fork this program to measure the NDT of the wood.
-
 
 ## References
 [1] Ayutyastuti. (2015). Studi Kelayakan Metode Nondestructive Test Berbasis Akustik untuk Memprediksi Nilai Modulus Elastisitas Kayu. Universitas Gadjah Mada.<br>
