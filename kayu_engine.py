@@ -1,15 +1,15 @@
-from tkinter import *
-from tkinter import ttk
+import sys
+import pyaudio
+import wave
+import datetime as dt
+import numpy as np
 from numpy import arange, sin, pi #need to be customized
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2TkAgg
 from matplotlib.figure import Figure
-import pyaudio
-import wave
-import sys
-import numpy as np
 from scipy.io import wavfile as wav
 from scipy.fftpack import fft
-import datetime as dt
+from tkinter import *
+from tkinter import ttk
 
 
 class Wood:

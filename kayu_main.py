@@ -10,7 +10,7 @@
 
 # IMPORT ALL THE REQUIRED LIBRARY
 # ALL THE LIBRARY IMPORTED IN kayueEngine
-from kayuEngine import *
+from kayu_engine import *
 
 # DEFINING SOME REQUIRED FUNCTIONS/CLASSES
 # create window for application setting

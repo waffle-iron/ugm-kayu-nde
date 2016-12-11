@@ -1,1 +1,0 @@
-from kayuEngine import kuadrat
