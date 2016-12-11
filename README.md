@@ -9,7 +9,7 @@ The acoustic method used in this program is the longitudinal stress wave techniq
 An impactor (e.g. hammer) induced a longitudinal stress wave. A longitudinal stress wave would propagate through the wood bar and a microphone record the signal. The audio spectrum analyzer transforms the time-domain signal to frequency-domain signal. The software acts as the spectrum analyzer.
 
 ## The instrumentation design
-The software is part of the open source instrument called MyWood. The block diagram of the instrument is shown in figure below.
+The software is part of the open source instrument called MyWood. The diagram block of the instrument is shown in figure below.
 <br><br>
 <img src="./pictures/kayu-instrument-diagram-block.PNG" width="50%" height="50%">
 <br><br>
