@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/mappuji/ugm-kayu-nde.png?label=ready&title=Ready)](https://waffle.io/mappuji/ugm-kayu-nde)
 # Open Source Non-Destructive Wood MoE Evaluation
 ## Purpose of the software
 This open source software developed to measure the MoE of wood with an acoustical method.
